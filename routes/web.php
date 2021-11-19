@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
  */
-
+Route::get('/', [ToDo::class, 'index'])->name('home');
 Route::get('todo/create', [Todo::class, 'create']);
 Route::post('todo/store', [Todo::class, 'store'])->name('todo.store');

@@ -11,6 +11,12 @@ class ToDo extends Model
 {
     use HasFactory;
 
+    public function index()
+    {
+        $todos = ToDo::orderBy('priority', 'asc')->get();
+        return view('home', compact('todos'));
+    }
+
     public function create()
     {
         return view('create-todo');
@@ -29,5 +35,7 @@ class ToDo extends Model
         $todo->detail = $validated_todo['detail'];
         $todo->priority = ToDo::count() + 1;
         $todo->save();
+
+        return redirect()->route('home');
     }
 }
