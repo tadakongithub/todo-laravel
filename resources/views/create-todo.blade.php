@@ -27,6 +27,14 @@
           <input type="text" id="name" name="name" placeholder="apply for laravel job at coalition tech">
           <label for="detail">Detail</label>
           <input type="text" id="detail" name="detail" placeholder="details here">
+          <label for="related_project">related project</label>
+          <select name="related_project" id="related_project">
+              @if($projects)
+                @foreach($projects as $project)
+                    <option value="{{$project->id}}">{{$project->name}}</option>
+                @endforeach
+              @endif
+          </select>
           <button type="submit">Create this ToDo !</button>
         </form>
     </body>

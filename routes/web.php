@@ -1,6 +1,7 @@
 <?php
 
-use App\Models\ToDo;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ToDoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +14,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
  */
-Route::get('/', [ToDo::class, 'index'])->name('home');
-Route::get('todo/create', [ToDo::class, 'create']);
-Route::post('todo/store', [ToDo::class, 'store'])->name('todo.store');
-Route::get('todo/{todo}/edit', [ToDo::class, 'edit'])->name('todo.edit');
-Route::put('todo/{todo}/update', [ToDo::class, 'updateTodo'])->name('todo.update');
-Route::delete('todo/delete', [ToDo::class, 'deleteTodo'])->name('todo.delete');
-Route::post('todos/reorder', [ToDo::class, 'updateTodoOrder'])->name('todos.reorder');
+Route::get('/', [ToDoController::class, 'index'])->name('home');
+Route::get('todo/create', [ToDoController::class, 'create']);
+Route::post('todo/store', [ToDoController::class, 'store'])->name('todo.store');
+Route::get('todo/{todo}/edit', [ToDoController::class, 'edit'])->name('todo.edit');
+Route::put('todo/{todo}/update', [ToDoController::class, 'updateTodo'])->name('todo.update');
+Route::delete('todo/delete', [ToDoController::class, 'deleteTodo'])->name('todo.delete');
+Route::post('todos/reorder', [ToDoController::class, 'updateTodoOrder'])->name('todos.reorder');
+Route::get('project/create', [ProjectController::class, 'create'])->name('project.create');
+Route::post('project/store', [ProjectController::class, 'store'])->name('project.store');
