@@ -82,4 +82,16 @@ class ToDo extends Model
 
         return response()->json(['status' => 'success']);
     }
+
+    public function updateTodoOrder(Request $request)
+    {
+        $arrOfPriorities = json_decode($request['data'], true);
+        foreach ($arrOfPriorities as $counter => $id) {
+            $todo = ToDo::find($id);
+            $todo->priority = $counter + 1;
+            $todo->save();
+        }
+
+        return response()->json(['status' => 'success']);
+    }
 }
