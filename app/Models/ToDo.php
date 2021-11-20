@@ -62,4 +62,24 @@ class ToDo extends Model
 
         return redirect()->route('home');
     }
+
+    public function deleteTodo(Request $request)
+    {
+        $todo = $request->validate([
+            'todo_id' => 'exists:to_dos,id',
+        ]);
+        $todoToDelete = ToDo::find($todo['todo_id']);
+
+        //decrement priority of existing todos whose priprity is bigger than the one we're deleting
+
+        $todos = ToDo::where('priority', '>', $todoToDelete->priority)->get();
+        foreach ($todos as $todo) {
+            $todo->priority = $todo->priority - 1;
+            $todo->save();
+        }
+
+        $todoToDelete->delete();
+
+        return response()->json(['status' => 'success']);
+    }
 }

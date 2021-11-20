@@ -18,3 +18,4 @@ Route::get('todo/create', [ToDo::class, 'create']);
 Route::post('todo/store', [ToDo::class, 'store'])->name('todo.store');
 Route::get('todo/{todo}/edit', [ToDo::class, 'edit'])->name('todo.edit');
 Route::put('todo/{todo}/update', [ToDo::class, 'updateTodo'])->name('todo.update');
+Route::delete('todo/delete', [ToDo::class, 'deleteTodo'])->name('todo.delete');
