@@ -38,4 +38,28 @@ class ToDo extends Model
 
         return redirect()->route('home');
     }
+
+    public function edit($todo)
+    {
+        $todo = ToDo::find($todo);
+        return view('edit-todo', compact('todo'));
+    }
+
+    public function updateTodo(Request $request, $todo)
+    {
+
+        //validate input
+        $validated_todo = $request->validate([
+            'name' => 'required|string',
+            'detail' => 'required|string',
+        ]);
+
+        //update todo
+        $todo = ToDo::find($todo);
+        $todo->name = $validated_todo['name'];
+        $todo->detail = $validated_todo['detail'];
+        $todo->save();
+
+        return redirect()->route('home');
+    }
 }

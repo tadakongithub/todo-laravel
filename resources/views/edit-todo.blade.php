@@ -21,25 +21,14 @@
         </style>
     </head>
     <body class="antialiased">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">todo name</th>
-            <th scope="col">edit</th>
-            <th scope="col">delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          @if($todos)
-            @foreach($todos as $todo)
-              <tr>
-                <td>{{$todo->name}}</td>
-                <td><a href="{{route('todo.edit', $todo)}}" class="btn">Edit</a></td>
-                <td><a href="">delete</a></td>
-              </tr>
-            @endforeach
-          @endif
-        </tbody>
-      </table>
+      <form action="{{route('todo.update', $todo)}}" method="POST">
+        @csrf
+        @method('PUT')
+        <label for="name">todo name</label>
+        <input type="text" id="name" name="name" value="{{$todo->name}}">
+        <label for="detail">Detail</label>
+        <input type="text" id="detail" name="detail" value="{{$todo->detail}}">
+        <button type="submit">update !</button>
+      </form>
     </body>
 </html>

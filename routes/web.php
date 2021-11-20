@@ -14,5 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
  */
 Route::get('/', [ToDo::class, 'index'])->name('home');
-Route::get('todo/create', [Todo::class, 'create']);
-Route::post('todo/store', [Todo::class, 'store'])->name('todo.store');
+Route::get('todo/create', [ToDo::class, 'create']);
+Route::post('todo/store', [ToDo::class, 'store'])->name('todo.store');
+Route::get('todo/{todo}/edit', [ToDo::class, 'edit'])->name('todo.edit');
+Route::put('todo/{todo}/update', [ToDo::class, 'updateTodo'])->name('todo.update');
