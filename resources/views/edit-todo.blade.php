@@ -28,6 +28,14 @@
         <input type="text" id="name" name="name" value="{{$todo->name}}">
         <label for="detail">Detail</label>
         <input type="text" id="detail" name="detail" value="{{$todo->detail}}">
+        <label for="related_project">related project</label>
+        <select name="related_project" id="related_project">
+            @if($projects)
+                @foreach($projects as $project)
+                    <option value="{{$project->id}}" {{$todo->project_id === $project->id ? 'selected' : ''}}>{{$project->name}}</option>
+                @endforeach
+            @endif
+        </select>
         <button type="submit">update !</button>
       </form>
     </body>

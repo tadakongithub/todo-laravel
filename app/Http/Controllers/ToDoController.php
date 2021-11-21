@@ -42,7 +42,11 @@ class ToDoController extends Controller
     public function edit($todo)
     {
         $todo = ToDo::find($todo);
-        return view('edit-todo', compact('todo'));
+        $projects = Project::get();
+        return view('edit-todo', [
+            'todo' => $todo,
+            'projects' => $projects,
+        ]);
     }
 
     public function updateTodo(Request $request, $todo)
@@ -52,12 +56,14 @@ class ToDoController extends Controller
         $validated_todo = $request->validate([
             'name' => 'required|string',
             'detail' => 'required|string',
+            'related_project' => 'nullable|exists:projects,id',
         ]);
 
         //update todo
         $todo = ToDo::find($todo);
         $todo->name = $validated_todo['name'];
         $todo->detail = $validated_todo['detail'];
+        $todo->project_id = $validated_todo['related_project'];
         $todo->save();
 
         return redirect()->route('home');
