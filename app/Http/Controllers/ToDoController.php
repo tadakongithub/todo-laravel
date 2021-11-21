@@ -8,10 +8,22 @@ use Illuminate\Http\Request;
 
 class ToDoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $todos = ToDo::orderBy('priority', 'asc')->get();
-        return view('home', compact('todos'));
+        if ($request->has('project')) {
+            $validated = $request->validate([
+                'project' => 'exists:projects,id',
+            ]);
+            $todos = ToDo::where('project_id', $validated['project'])->orderBy('priority', 'asc')->get();
+        } else {
+            $todos = ToDo::orderBy('priority', 'asc')->get();
+        }
+
+        $projects = Project::get();
+        return view('home', [
+            'todos' => $todos,
+            'projects' => $projects,
+        ]);
     }
 
     public function create()
@@ -91,10 +103,11 @@ class ToDoController extends Controller
 
     public function updateTodoOrder(Request $request)
     {
-        $arrOfPriorities = json_decode($request['data'], true);
-        foreach ($arrOfPriorities as $counter => $id) {
+        $arrOfIds = json_decode($request['ids'], true);
+        $arrOfPriorities = json_decode($request['priorities'], true);
+        foreach ($arrOfIds as $counter => $id) {
             $todo = ToDo::find($id);
-            $todo->priority = $counter + 1;
+            $todo->priority = (int) $arrOfPriorities[$counter];
             $todo->save();
         }
 

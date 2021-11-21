@@ -33,10 +33,22 @@
     </head>
     <body class="antialiased">
 
+      <form action="{{route('home')}}" method="GET">
+        <label for="project">Filter with project</label>
+        <select name="project" id="project">
+          @if($projects)
+            @foreach($projects as $project)
+              <option value="{{$project->id}}">{{$project->name}}</option>
+            @endforeach
+          @endif
+        </select>
+        <button type="submit">filter !</button>
+      </form>
+
       <ul id="sort">
         @if($todos)
           @foreach($todos as $todo)
-            <li class="todo-li" data-todo-id="{{$todo->id}}">
+            <li class="todo-li" data-todo-id="{{$todo->id}}" data-todo-priority="{{$todo->priority}}">
               <div>{{$todo->name}}</div>
               <a href="{{route('todo.edit', $todo)}}" class="btn">Edit</a>
               <button class="btn delete-todo" data-todo-id="{{$todo->id}}">Delete</button>
@@ -87,26 +99,43 @@
         });
 
         //sort
+        let doms = document.querySelectorAll('.todo-li')
+        let prioritiesInOriginalOrder = []
+        doms.forEach((li) => {
+          prioritiesInOriginalOrder.push(li.dataset.todoPriority)
+        })
+        console.log(prioritiesInOriginalOrder)
+
         $('#sort').sortable({
-  update: function( event, ui ) {
-    let doms = document.querySelectorAll('.todo-li')
-    let arrOfIds = []
-    doms.forEach((li) => {
-      arrOfIds.push(li.dataset.todoId)
-    })
-    let data = JSON.stringify(arrOfIds)
-    $.ajax({
-      type: 'POST',
-      url: "{{route('todos.reorder')}}",
-      data: {
-        _token: "{{ csrf_token() }}",
-        data: data,
-      }
-    }).done(function(msg){
-      console.log(msg)
-    })
-  }
-})
+          update: function( event, ui ) {
+            let doms = document.querySelectorAll('.todo-li')
+            let arrOfIds = []
+            let arrOfPriorities = []
+            doms.forEach((li) => {
+              arrOfIds.push(li.dataset.todoId)
+              arrOfPriorities.push(li.dataset.todoPriority)
+            })
+            
+
+            let ids = JSON.stringify(arrOfIds)
+            let priorities = JSON.stringify(prioritiesInOriginalOrder)
+            $.ajax({
+              type: 'POST',
+              url: "{{route('todos.reorder')}}",
+              data: {
+                _token: "{{ csrf_token() }}",
+                ids: ids,
+                priorities: priorities
+              }
+            }).done(function(msg){
+              console.log(msg)
+              prioritiesInOriginalOrder = arrOfPriorities
+            })
+          }
+        })
+
+        
+        
       </script>
     </body>
 </html>
