@@ -33,31 +33,39 @@
     </head>
     <body class="antialiased">
 
-      <form action="{{route('home')}}" method="GET">
-        <label for="project">Filter with project</label>
-        <select name="project" id="project">
-          @if($projects)
-            @foreach($projects as $project)
-              <option value="{{$project->id}}" {{$current_project == $project->id ? 'selected' : ''}}>{{$project->name}}</option>
+      <div class="container d-flex align-items-center justify-content-around py-5">
+        <form action="{{route('home')}}" method="GET" class="d-flex align-items-center">
+          <select name="project" class="custom-select">
+            @if($projects)
+              @foreach($projects as $project)
+                <option value="{{$project->id}}" {{$current_project == $project->id ? 'selected' : ''}}>{{$project->name}}</option>
+              @endforeach
+            @endif
+          </select>
+          <button type="submit" class="btn btn-primary">filter</button>
+        </form>
+
+        <a href="{{route('home')}}">unfilter</a>
+      </div>
+      
+
+      <div class="container">
+        <ul id="sort" class="list-unstyled">
+          @if($todos)
+            @foreach($todos as $todo)
+              <li class="todo-li container my-3 bg-light p-2" data-todo-id="{{$todo->id}}" data-todo-priority="{{$todo->priority}}">
+                <div class="row">
+                  <div class="col-10 align-items-center d-flex">{{$todo->name}}</div>
+                  <a href="{{route('todo.edit', $todo)}}" class="btn btn-primary">Edit</a>
+                  <button class="btn btn-danger delete-todo" data-todo-id="{{$todo->id}}">Delete</button>
+                </div>
+              </li>
             @endforeach
           @endif
-        </select>
-        <button type="submit">filter !</button>
-      </form>
+        </ul>
+      </div>
 
-      <a href="{{route('home')}}" class="btn">unfilter</a>
-
-      <ul id="sort">
-        @if($todos)
-          @foreach($todos as $todo)
-            <li class="todo-li" data-todo-id="{{$todo->id}}" data-todo-priority="{{$todo->priority}}">
-              <div>{{$todo->name}}</div>
-              <a href="{{route('todo.edit', $todo)}}" class="btn">Edit</a>
-              <button class="btn delete-todo" data-todo-id="{{$todo->id}}">Delete</button>
-            </li>
-          @endforeach
-        @endif
-      </ul>
+      
 
 
       <script>
@@ -85,7 +93,6 @@
                   </div>
                 `
                 $('body').prepend(warning)
-                console.log('else')
               }
           }).fail(function(jqXHR, textStatus, errorThrown) {
             const warning = `
@@ -106,7 +113,6 @@
         doms.forEach((li) => {
           prioritiesInOriginalOrder.push(li.dataset.todoPriority)
         })
-        console.log(prioritiesInOriginalOrder)
 
         $('#sort').sortable({
           update: function( event, ui ) {
@@ -130,7 +136,6 @@
                 priorities: priorities
               }
             }).done(function(msg){
-              console.log(msg)
               prioritiesInOriginalOrder = arrOfPriorities
             })
           }
