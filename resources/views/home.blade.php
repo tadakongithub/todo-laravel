@@ -38,12 +38,14 @@
         <select name="project" id="project">
           @if($projects)
             @foreach($projects as $project)
-              <option value="{{$project->id}}">{{$project->name}}</option>
+              <option value="{{$project->id}}" {{$current_project == $project->id ? 'selected' : ''}}>{{$project->name}}</option>
             @endforeach
           @endif
         </select>
         <button type="submit">filter !</button>
       </form>
+
+      <a href="{{route('home')}}" class="btn">unfilter</a>
 
       <ul id="sort">
         @if($todos)

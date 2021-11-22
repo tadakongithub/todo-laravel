@@ -14,15 +14,18 @@ class ToDoController extends Controller
             $validated = $request->validate([
                 'project' => 'exists:projects,id',
             ]);
-            $todos = ToDo::where('project_id', $validated['project'])->orderBy('priority', 'asc')->get();
+            $current_project = $validated['project'];
+            $todos = ToDo::where('project_id', $current_project)->orderBy('priority', 'asc')->get();
         } else {
             $todos = ToDo::orderBy('priority', 'asc')->get();
+            $current_project = '';
         }
 
         $projects = Project::get();
         return view('home', [
             'todos' => $todos,
             'projects' => $projects,
+            'current_project' => $current_project,
         ]);
     }
 
