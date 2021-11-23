@@ -31,11 +31,13 @@
         <ul id="sort" class="list-unstyled">
           @if($todos)
             @foreach($todos as $todo)
-              <li class="todo-li container my-3 bg-light p-2" data-todo-id="{{$todo->id}}" data-todo-priority="{{$todo->priority}}">
-                <div class="row">
+              <li class="todo-li my-3 bg-light p-2" data-todo-id="{{$todo->id}}" data-todo-priority="{{$todo->priority}}">
+                <div class="d-flex flex-wrap">
                   <div class="col-10 align-items-center d-flex">{{$todo->name}}</div>
-                  <a href="{{route('todo.edit', $todo)}}" class="btn btn-primary">Edit</a>
-                  <button class="btn btn-danger delete-todo" data-todo-id="{{$todo->id}}">Delete</button>
+                  <div class="d-flex align-items-center">
+                    <a href="{{route('todo.edit', $todo)}}" class="btn btn-primary">Edit</a>
+                    <button class="btn btn-danger delete-todo" data-todo-id="{{$todo->id}}">Delete</button>
+                  </div>
                 </div>
               </li>
             @endforeach
