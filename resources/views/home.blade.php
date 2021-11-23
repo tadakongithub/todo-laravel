@@ -11,20 +11,20 @@
 
       @section('content')
 
-      <div class="container d-flex align-items-center justify-content-around py-5">
-        <form action="{{route('home')}}" method="GET" class="d-flex align-items-center">
-          <select name="project" class="custom-select">
-            @if($projects)
-              @foreach($projects as $project)
-                <option value="{{$project->id}}" {{$current_project == $project->id ? 'selected' : ''}}>{{$project->name}}</option>
-              @endforeach
-            @endif
-          </select>
-          <button type="submit" class="btn btn-primary">filter</button>
-        </form>
+      @if(count($projects) > 0)
+        <div class="container d-flex align-items-center justify-content-around py-5">
+          <form action="{{route('home')}}" method="GET" class="d-flex align-items-center">
+            <select name="project" class="custom-select">
+                @foreach($projects as $project)
+                  <option value="{{$project->id}}" {{$current_project == $project->id ? 'selected' : ''}}>{{$project->name}}</option>
+                @endforeach
+            </select>
+            <button type="submit" class="btn btn-primary">filter</button>
+          </form>
 
-        <a href="{{route('home')}}">unfilter</a>
-      </div>
+          <a href="{{route('home')}}">unfilter</a>
+        </div>
+      @endif
       
 
       <div class="container">
